@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head lang="en">
+<script type="text/javascript" src="../static/js/jquery.min.js"
+	th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" src="../static/js/app.js"
+	th:src="@{/js/app.js}"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/app.css" />
+</head>
+<body>
+
+	<div class="container">
+		<div th:fragment="personForm" class="row align-items-center">
+			<form class="form-horizontal" onsubmit="addPerson(event)">
+				<fieldset>
+
+					<!-- Form Name -->
+					<div class="row">
+						<div class="col-md-4 col-md-offset-4">
+							<h3>Persons</h3>
+						</div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="key">KEY</label>
+						<div class="col-md-4">
+							<input id="person_key" name="person_key" placeholder="Person Key"
+								class="form-control input-md" required="true" type="number">
+						</div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="person_name">NAME</label>
+						<div class="col-md-4">
+							<input id="person_name" name="person_name"
+								placeholder="person NAME" class="form-control input-md"
+								required="true" type="text">
+						</div>
+					</div>
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="person_gender">GENDER</label>
+						<div class="col-md-4">
+							<input id="person_gender" name="person_gender"
+								placeholder="person gender" class="form-control input-md"
+								type="text">
+						</div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="person_motherid">Mother
+							ID</label>
+						<div class="col-md-4">
+							<input id="person_motherid" name="person_motherid"
+								placeholder="person mother id" class="form-control input-md"
+								type="number">
+						</div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="person_fatherid">Father
+							ID</label>
+						<div class="col-md-4">
+							<input id="person_fatherid" name="person_fatherid"
+								placeholder="person father id" class="form-control input-md"
+								type="number">
+						</div>
+					</div>
+
+
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="person_dob">DATE
+							OF BIRTH</label>
+						<div class="col-md-4">
+							<input id="person_dob" name="person_dob"
+								placeholder="date of birth" class="form-control input-md"
+								type="date">
+
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="singlebutton">Add
+							Person</label>
+						<div class="col-md-4">
+							<button id="add_person" class="btn btn-primary" value="ADD">ADD</button>
+						</div>
+					</div>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-4 col-md-offset-4">
+						<span id="add_person_result"></span>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

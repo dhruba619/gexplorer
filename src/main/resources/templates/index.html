@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Geneology Explorer</title>
+
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+
+<body>
+	<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+	<!------ Include the above in your HEAD tag ---------->
+	<div class="ui middle aligned center aligned grid" id="person_home_grid">
+		<!--/*/ <th:block th:include="fragments/personhome :: personhome"></th:block> /*/-->
+	</div>
+	
+	<div class="ui middle aligned center aligned grid" id="person_add_grid" style="display:none">
+		<!--/*/ <th:block th:include="fragments/personForm :: personForm"></th:block> /*/-->
+	</div>
+	<div class="ui middle aligned center aligned grid" id="person_search_grid" style="display:none">
+		<!--/*/ <th:block th:include="fragments/searchPerson :: searchPersonForm"></th:block> /*/-->
+	</div>
+	<div class="ui middle aligned center aligned grid" id="person_children_grid" style="display:none">
+		<!--/*/ <th:block th:include="fragments/searchChildren :: searchChildrenForm"></th:block> /*/-->
+	</div>
+	<div class="ui middle aligned center aligned grid" id="person_ancestors_grid" style="display:none">
+		<!--/*/ <th:block th:include="fragments/searchAncestors :: searchAncestorsForm"></th:block> /*/-->
+	</div>
+</body>
+</html>
