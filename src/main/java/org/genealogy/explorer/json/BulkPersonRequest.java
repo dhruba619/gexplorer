@@ -6,13 +6,13 @@ import org.genealogy.explorer.entities.Person;
 
 public class BulkPersonRequest {
     
-    private List<Person> list;
+    private List<PersonJson> list;
 
-    public List<Person> getList() {
+    public List<PersonJson> getList() {
         return list;
     }
 
-    public void setList(List<Person> list) {
+    public void setList(List<PersonJson> list) {
         this.list = list;
     }
     

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.genealogy.explorer.entities.Person;
 import org.genealogy.explorer.json.BulkPersonRequest;
+import org.genealogy.explorer.json.PersonJson;
 import org.genealogy.explorer.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class PersonValidator {
     @Autowired
     PersonRepository personRepository;
 
-    public void validate(Person person) throws GenealogyException {
+    public void validate(PersonJson person) throws GenealogyException {
         boolean isValid = true;
 
         if (person.getKey() == null) {
@@ -45,7 +46,7 @@ public class PersonValidator {
     }
 
     public void validate(BulkPersonRequest persons) throws GenealogyException {
-        for (Person person : persons.getList()) {
+        for (PersonJson person : persons.getList()) {
             validate(person);
         }
     }
