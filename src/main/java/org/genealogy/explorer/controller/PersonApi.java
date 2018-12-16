@@ -170,7 +170,7 @@ public class PersonApi {
     }
 
     @RequestMapping(path = "/person/ancestors/{key}", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> getAncestors(@PathVariable("key") int key) {
+    public ResponseEntity<Person> getAncestors(@PathVariable("key") int key) {
 
         try {
             Person person = personService.getPerson(key);
@@ -178,13 +178,10 @@ public class PersonApi {
             ObjectMapper mapper = new ObjectMapper();
 
             return ResponseEntity.status(HttpStatus.OK)
-                .body(mapper.writeValueAsString(person));
+                .body(person);
         } catch (GenealogyException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Gson().toJson(new GenericResponse(AppConstants.RESULT_FAILED, e.getErrorMessage())));
-        } catch (JsonProcessingException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Gson().toJson(new GenericResponse(AppConstants.RESULT_FAILED, ex.getMessage())));
+                .body(null);
         }
     }
 

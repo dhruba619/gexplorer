@@ -1,12 +1,20 @@
 package org.genealogy.explorer.entities;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * 
@@ -15,6 +23,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity
 @Table(name="Person")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class, 
+    property = "key")
 public class Person {
 
     @Id
@@ -38,7 +49,33 @@ public class Person {
     
     @Column(name="gender")
     private String gender;
+    
+    @OneToMany(mappedBy="father",fetch=FetchType.EAGER)
+    @JsonBackReference
+    @JsonIgnore
+    private Collection<Person> childrenf;
+    
+    @OneToMany(mappedBy="mother",fetch=FetchType.EAGER)
+    @JsonBackReference
+    @JsonIgnore
+    private Collection<Person> childrenm;
+    
+    
+    
   
+    public Collection<Person> getChildrenm() {
+        return childrenm;
+    }
+    public void setChildrenm(Collection<Person> childrenm) {
+        this.childrenm = childrenm;
+    }
+    public Collection<Person> getChildrenf() {
+        return childrenf;
+    }
+    public void setChildrenf(Collection<Person> childrenf) {
+        this.childrenf = childrenf;
+    }
+   
     public Integer getKey() {
         return key;
     }
