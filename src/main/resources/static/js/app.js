@@ -269,3 +269,53 @@ function deletePerson(event) {
 			});
 	$("#search_person_key").val('');
 }
+
+
+function searchAncestors(event) {
+	event.stopPropagation();
+	event.preventDefault();
+	$("#search_ancestors_result").html('');
+	var key = $("#search_ancestor_key").val();
+	$.ajax({
+		headers : {
+					'authorization' : 'Bearer '
+							+ getAccessToken(),
+					'Content-Type' : 'application/json'		
+				},
+				type : "GET",
+				url : '/GE/person/ancestors/'+key
+	}).then(
+			function(data) {
+				console.log(data);
+				$("#search_ancestors_result").html(renderjson(data));
+
+			}).catch(function(error){
+				$("#search_ancestors_result").html("ERROR: "+ JSON.stringify(error));
+			});
+	$("#search_person_key").val('');
+	
+}
+
+function searchChildren(event) {
+	event.stopPropagation();
+	event.preventDefault();
+	$("#search_children_result").html('');
+	var key = $("#search_children_key").val();
+	$.ajax({
+		headers : {
+					'authorization' : 'Bearer '
+							+ getAccessToken(),
+					'Content-Type' : 'application/json'		
+				},
+				type : "GET",
+				url : '/GE/person/descendants/'+key
+	}).then(
+			function(data) {
+				console.log(data);
+				$("#search_children_result").html(renderjson(data));
+
+			}).catch(function(error){
+				$("#search_children_result").html("ERROR: "+ JSON.stringify(error));
+			});
+	$("#search_person_key").val('');
+}
