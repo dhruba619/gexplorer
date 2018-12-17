@@ -6,7 +6,6 @@ import java.util.List;
 import org.genealogy.explorer.entities.Person;
 import org.genealogy.explorer.json.BulkPersonRequest;
 import org.genealogy.explorer.json.GenericResponse;
-import org.genealogy.explorer.json.Node;
 import org.genealogy.explorer.json.PersonJson;
 import org.genealogy.explorer.service.PersonService;
 import org.genealogy.explorer.utils.AppConstants;
@@ -136,10 +135,12 @@ public class PersonApi {
             PersonJson json = new PersonJson();
             json.setKey(person.getKey());
             json.setDateOfBirth(person.getDateOfBirth());
-            json.setFatherKey(person.getFatherKey()
-                .getKey());
-            json.setMotherKey(person.getMotherKey()
-                .getKey());
+            if (null != person.getFatherKey())
+                json.setFatherKey(person.getFatherKey()
+                    .getKey());
+            if (null != person.getMotherKey())
+                json.setMotherKey(person.getMotherKey()
+                    .getKey());
             json.setGender(person.getGender());
             json.setName(person.getName());
             ObjectMapper mapper = new ObjectMapper();
@@ -169,25 +170,37 @@ public class PersonApi {
         }
     }
 
-    @RequestMapping(path = "/person/ancestors/{key}", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<Person> getAncestors(@PathVariable("key") int key) {
+    @RequestMapping(path = "/person/ancestors/{key}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<String> getAncestors(@PathVariable("key") int key) {
 
         try {
-            Person person = personService.getPerson(key);
-
-            ObjectMapper mapper = new ObjectMapper();
+            String person = personService.getAncestors(key);
 
             return ResponseEntity.status(HttpStatus.OK)
                 .body(person);
         } catch (GenealogyException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(null);
+                .body(new Gson().toJson(new GenericResponse(AppConstants.RESULT_FAILED, e.getErrorMessage())));
+        } catch (JsonProcessingException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Gson().toJson(new GenericResponse(AppConstants.RESULT_FAILED, ex.getMessage())));
         }
     }
+    
+    @RequestMapping(path = "/person/descendants/{key}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<String> getDecendants(@PathVariable("key") int key) {
+        try {
+            String person = personService.getChildren(key);
 
-    public ResponseEntity<GenericResponse> getDecendants(int key) {
-        // TODO Auto-generated method stub
-        return null;
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(person);
+        } catch (GenealogyException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Gson().toJson(new GenericResponse(AppConstants.RESULT_FAILED, e.getErrorMessage())));
+        } catch (JsonProcessingException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Gson().toJson(new GenericResponse(AppConstants.RESULT_FAILED, ex.getMessage())));
+        }
     }
 
 }

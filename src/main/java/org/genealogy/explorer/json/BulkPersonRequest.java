@@ -2,8 +2,6 @@ package org.genealogy.explorer.json;
 
 import java.util.List;
 
-import org.genealogy.explorer.entities.Person;
-
 public class BulkPersonRequest {
     
     private List<PersonJson> list;

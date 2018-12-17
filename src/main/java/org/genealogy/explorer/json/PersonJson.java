@@ -3,8 +3,6 @@ package org.genealogy.explorer.json;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 
-import org.genealogy.explorer.entities.Person;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PersonJson {

@@ -11,6 +11,17 @@ import org.genealogy.explorer.utils.GenealogyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.monitorjbl.json.JsonView;
+import com.monitorjbl.json.JsonViewSerializer;
+
+import static com.monitorjbl.json.Match.match;
+
 @Service
 public class PersonService {
 
@@ -80,6 +91,41 @@ public class PersonService {
         Optional<Person> personOptional = personRepository.findById(key);
         if (personOptional.isPresent()) {
             personRepository.delete(personOptional.get());
+        } else {
+            throw new GenealogyException(String.format(AppConstants.ERROR_PERSON_DOES_NOT_EXIST, String.valueOf(key)), null);
+        }
+    }
+    
+    public String getAncestors(Integer key) throws GenealogyException, JsonProcessingException {
+        Optional<Person> personOptional = personRepository.findById(key);
+        if(personOptional.isPresent()) {
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(JsonView.class, new JsonViewSerializer());
+            mapper.registerModule(module);
+            String json = mapper.writeValueAsString(JsonView.with(personOptional.get())
+                .onClass(Person.class, match()
+                    .exclude("childrenf"))
+                .onClass(Person.class, match()
+                    .exclude("childrenm")));
+            return json;
+        } else {
+            throw new GenealogyException(String.format(AppConstants.ERROR_PERSON_DOES_NOT_EXIST, String.valueOf(key)), null);
+        }
+    }
+    
+    public String getChildren(Integer key) throws GenealogyException, JsonProcessingException {
+        Optional<Person> personOptional = personRepository.findById(key);
+        if(personOptional.isPresent()) {
+           // ObjectMapper mapper = new ObjectMapper();
+            //String json = mapper.writeValueAsString(personOptional.get());
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleBeanPropertyFilter theFilter = SimpleBeanPropertyFilter
+              .serializeAllExcept("m","f");
+            FilterProvider filters = new SimpleFilterProvider()
+              .addFilter("myFilter", theFilter);
+          String json = mapper.writer(filters).writeValueAsString(personOptional.get());
+            return json;
         } else {
             throw new GenealogyException(String.format(AppConstants.ERROR_PERSON_DOES_NOT_EXIST, String.valueOf(key)), null);
         }
